@@ -5,7 +5,7 @@ namespace STIGRADOR
 {
     public class PlayerPrefsJsonStorage : JsonStorageBase
     {
-        public virtual void Load<T>(string key, Action<T> callback)
+        public override void Load<T>(string key, Action<T> callback)
         {
             if (!PlayerPrefs.HasKey(key))
             {
