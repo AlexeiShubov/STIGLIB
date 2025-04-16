@@ -8,7 +8,7 @@ namespace STIGRADOR
 
         public StorageService()
         {
-            _storageService = new JsonStorage();
+            _storageService = new PlayerPrefsJsonStorage();
         }
 
         public void Save(string key, object data, Action<bool> callback = null)
