@@ -1,0 +1,15 @@
+{
+  "name": "com.stigrador.gitpackage",
+  "version": "1.0.5",
+  "displayName": "STIGLIBS",
+  "description": "My base package libs",
+  "unity": "2019.1",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+ },
+  "author": {
+    "name": "Alexei",
+    "email": "alexeishubov.@gmail.com",
+    "url": "https://www.linkedin.com/in/alexei-shubov/"
+  }
+}
