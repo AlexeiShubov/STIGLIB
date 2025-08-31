@@ -1,9 +1,10 @@
 using System;
+using STIGRADOR.Utils;
 using UnityEngine;
 
 namespace STIGRADOR.FSM
 {
-    public abstract class BaseState
+    public abstract class BaseState : IUpdatable
     {
         public Type Name { get; }
 
@@ -22,6 +23,6 @@ namespace STIGRADOR.FSM
             Debug.Log($"<color=red>Exit</color> state ---> {Name}");
         }
 
-        public virtual void Update() { }
+        public virtual void DoUpdate(float deltaTime) { }
     }
 }

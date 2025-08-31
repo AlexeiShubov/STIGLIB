@@ -23,9 +23,9 @@ namespace STIGRADOR.FSM
             _eventManager = eventManager;
         }
 
-        public override void Update()
+        public override void DoUpdate()
         {
-            _currentState?.Update();
+            _currentState?.DoUpdate(Time.deltaTime);
         }
 
         public override void GoToState(Type state)

@@ -1,8 +1,9 @@
 using System;
+using STIGRADOR.Utils;
 
 namespace STIGRADOR.FSM
 {
-    public abstract class BaseFSM<T> where T : BaseState
+    public abstract class BaseFSM<T> where T : BaseState, IUpdatable
     {
         protected T _currentState;
         
@@ -13,7 +14,7 @@ namespace STIGRADOR.FSM
             Name = name;
         }
 
-        public abstract void Update();
+        public abstract void DoUpdate();
         public abstract void GoToState(Type state);
     }
 }
