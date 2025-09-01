@@ -5,22 +5,25 @@ using UnityEngine;
 
 namespace STIGRADOR.FSM
 {
-    public class FSM<T> : BaseFSM<FSMState>, IFSM where T : FSMState
+    public class FSM : BaseFSM<FSMState>, IFSM
     {
-        protected readonly Dictionary<Type, T> _states = new Dictionary<Type, T>();
-        protected readonly GlobalModel _globalModel;
-        protected readonly ScopeModel _scopeModel;
-        protected readonly EventManager _eventManager;
+        protected readonly Dictionary<Type, FSMState> _states = new Dictionary<Type, FSMState>();
 
-        public GlobalModel GlobalModel => _globalModel;
-        public ScopeModel ScopeModel => _scopeModel;
-        public EventManager EventManager => _eventManager;
+        public SystemModel SystemModel { get; }
+        public ScopeModel ScopeModel { get; }
+        public Binder SystemBinder { get; }
+        public Binder ScopeBinder { get; }
+        public IInvoker SystemInvoker { get; }
+        public IInvoker ScopeInvoker { get; }
 
-        public FSM(string name, GlobalModel globalModel, ScopeModel scopeModel, EventManager eventManager) : base(name)
+        public FSM(string name, SystemEntity systemEntity) : base(name)
         {
-            _globalModel = globalModel;
-            _scopeModel = scopeModel;
-            _eventManager = eventManager;
+            SystemModel = systemEntity.SystemModel;
+            ScopeModel = systemEntity.ScopeModel;
+            SystemBinder = systemEntity.SystemBinder;
+            ScopeBinder = systemEntity.ScopeBinder;
+            SystemInvoker = systemEntity.SystemInvoker;
+            ScopeInvoker = systemEntity.ScopeInvoker;
         }
 
         public override void DoUpdate()
@@ -28,7 +31,12 @@ namespace STIGRADOR.FSM
             _currentState?.DoUpdate(Time.deltaTime);
         }
 
-        public override void GoToState(Type state)
+        public void StartState(Type nextState)
+        {
+            GoToState(nextState);
+        }
+
+        protected override void GoToState(Type state)
         {
             _currentState?.Exit();
             
@@ -43,7 +51,7 @@ namespace STIGRADOR.FSM
             _currentState.Enter();
         }
 
-        public void AddState(T state)
+        public void AddState(FSMState state)
         {
             if (_states.ContainsKey(state.Name))
             {
@@ -51,8 +59,8 @@ namespace STIGRADOR.FSM
                 
                 return;
             }
-
-            state.SetParentFSM(this);
+            
+            state.Init(this);
             _states.Add(state.Name, state);
         }
 

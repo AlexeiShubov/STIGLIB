@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace STIGRADOR.MVVM
 {
-    public class BindingsStorage
+    public class BindingsStorage : IDisposable
     {
         private readonly Dictionary<string, Delegate> _bindings;
 
@@ -15,16 +15,16 @@ namespace STIGRADOR.MVVM
             _bindings = new Dictionary<string, Delegate>();
         }
         
-        public void WriteEvent<T>(string eventName, T method) where T : Delegate
+        public void WriteEvent(string eventName, Delegate handler)
         {
             if (!_bindings.ContainsKey(eventName))
             {
-                _bindings.Add(eventName, method);
+                _bindings.Add(eventName, handler);
             }
 
-            if (DelegateContains(_bindings[eventName], method)) return;
+            if (DelegateContains(_bindings[eventName], handler)) return;
 
-            _bindings[eventName] = Delegate.Combine(_bindings[eventName], method);
+            _bindings[eventName] = Delegate.Combine(_bindings[eventName], handler);
         }
 
         public void RemoveEvent(string eventName, Delegate handler)
@@ -43,23 +43,20 @@ namespace STIGRADOR.MVVM
             _bindings[eventName] = newHandler;
         }
 
-        public Delegate GetEvents(string eventName)
+        private bool DelegateContains(Delegate source, Delegate handler)
         {
-            return _bindings.TryGetValue(eventName, out var value) ? value : null;
+            if (source == handler) return true;
+            
+            return source
+                .GetInvocationList()
+                .Any(d => 
+                d.Target == handler.Target && 
+                d.Method == handler.Method);
         }
 
-        public void Clear()
+        public void Dispose()
         {
             _bindings.Clear();
-        }
-
-        private bool DelegateContains(Delegate source, Delegate target)
-        {
-            if (source == target) return true;
-            
-            return source.GetInvocationList().Any(d => 
-                d.Target == target.Target && 
-                d.Method == target.Method);
         }
     }
 }

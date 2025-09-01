@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace STIGRADOR.FSM
 {
-    public abstract class BaseState : IUpdatable
+    public abstract class BaseState : IUpdatable, IDisposable
     {
         public Type Name { get; }
 
@@ -24,5 +24,7 @@ namespace STIGRADOR.FSM
         }
 
         public virtual void DoUpdate(float deltaTime) { }
+
+        public abstract void Dispose();
     }
 }

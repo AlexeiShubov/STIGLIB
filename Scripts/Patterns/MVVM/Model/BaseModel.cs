@@ -6,12 +6,11 @@ namespace STIGRADOR.MVVM
     public abstract class BaseModel
     {
         private readonly Dictionary<string, object> _dataObject = new Dictionary<string, object>();
+        public IInvoker BaseEventManager { get; }
 
-        public EventManager EventManager { get; }
-
-        public BaseModel(EventManager eventManager)
+        public BaseModel(IInvoker baseEventManager)
         {
-            EventManager = eventManager;
+            BaseEventManager = baseEventManager;
         }
 
         public void Set<T>(string name, T value, bool invokeEvent = true)
@@ -27,7 +26,7 @@ namespace STIGRADOR.MVVM
             
             if (!invokeEvent) return;
             
-            EventManager.Invoke($"On{name}Changed", value);
+            BaseEventManager.Invoke($"On{name}Changed", value);
         }
 
         public T Get<T>(string name, T defaultValue = default)
@@ -161,5 +160,11 @@ namespace STIGRADOR.MVVM
         }
 
         #endregion
+        
+        public enum ModelType
+        {
+            Global,
+            Scope
+        }
     }
 }

@@ -4,15 +4,24 @@ namespace STIGRADOR.FSM
 {
     public class FSMState : BaseState
     {
-        protected IFSM _fsm;
+        protected IFSM _FSM;
 
-        public BaseModel GlobalModel => _fsm.GlobalModel;
-        public BaseModel ScopeModel => _fsm.ScopeModel;
-        public EventManager EventManager => _fsm.EventManager;
+        protected SystemModel GlobalModel => _FSM.SystemModel;
+        protected ScopeModel ScopeModel => _FSM.ScopeModel;
+        protected Binder SystemBinder => _FSM.SystemBinder;
+        protected Binder ScopeBinder => _FSM.ScopeBinder;
+        protected IInvoker SystemEventManager => _FSM.SystemInvoker;
+        protected IInvoker ScopeEventManager => _FSM.ScopeInvoker;
 
-        public void SetParentFSM(IFSM baseFsm)
+        public virtual void Init(IFSM FSM)
         {
-            _fsm = baseFsm;
+            _FSM = FSM;
+        }
+
+        public override void Dispose()
+        {
+            SystemBinder.Dispose();
+            ScopeBinder.Dispose();
         }
     }
 }

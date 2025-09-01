@@ -15,6 +15,6 @@ namespace STIGRADOR.FSM
         }
 
         public abstract void DoUpdate();
-        public abstract void GoToState(Type state);
+        protected abstract void GoToState(Type state);
     }
 }
