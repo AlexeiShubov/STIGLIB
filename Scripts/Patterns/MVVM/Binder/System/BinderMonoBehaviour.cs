@@ -8,7 +8,7 @@ namespace STIGRADOR.MVVM
         protected ScopeModel _Model { get; private set; }
         protected IInvoker _Invoker { get; private set; }
 
-        public void Construct(ScopeModel scopeModel, ScopeEventManager scopeEventManager)
+        public virtual void Construct(ScopeModel scopeModel, ScopeEventManager scopeEventManager)
         {
             _Model = scopeModel;
             _Invoker = scopeEventManager;

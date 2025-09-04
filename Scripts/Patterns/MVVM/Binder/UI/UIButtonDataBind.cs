@@ -6,21 +6,27 @@ namespace STIGRADOR.MVVM
 	[RequireComponent(typeof(Button))]
 	public class UIButtonDataBind : BinderMonoBehaviour
 	{
+		[SerializeField] protected string _eventNameButton;
 		[SerializeField] protected string _enableField;
 		[SerializeField] protected bool _defaultEnable = true;
 		
 		protected Button _button;
 
-		protected virtual void Awake()
+		public override void Construct(ScopeModel scopeModel, ScopeEventManager scopeEventManager)
 		{
+			base.Construct(scopeModel, scopeEventManager);
+			
 			_button = GetComponent<Button>();
 
-			_enableField = _enableField == "" ? $"Btn{gameObject.name}Enable" : _enableField;
-			_button.onClick.AddListener(OnClick);
+			_eventNameButton = _eventNameButton == "" ? $"{gameObject.name}" : _eventNameButton;
+			_enableField = _enableField == "" ? $"Btn{_eventNameButton}Enable" : $"Btn{_enableField}Enable";
+
+			Subscribe();
 		}
 
-		protected virtual void Start()
+		protected void Subscribe()
 		{
+			_button.onClick.AddListener(OnClick);
 			_Binder.Bind<bool>($"On{_enableField}Changed", OnItemEnable);
 
 			OnItemEnable(_Model.GetBool(_enableField, _defaultEnable));
@@ -35,7 +41,7 @@ namespace STIGRADOR.MVVM
 		{
 			if (!_button.interactable || !isActiveAndEnabled) return;
 
-			_Invoker.Invoke("OnBtn", _enableField);
+			_Invoker.Invoke("OnBtn", _eventNameButton);
 		}
 
 		protected override void OnDestroy()
