@@ -5,12 +5,12 @@ namespace STIGRADOR.FSM
 {
     public interface IFSM
     {
-       SystemModel SystemModel { get; }
-       ScopeModel ScopeModel { get; }
-       Binder SystemBinder { get; }
-       Binder ScopeBinder { get; }
-       IInvoker SystemInvoker { get; }
-       IInvoker ScopeInvoker { get; }
+       SystemModel ModelSystem { get; }
+       ScopeModel Model { get; }
+       Binder BinderSystem { get; }
+       Binder Binder { get; }
+       IInvoker InvokerSystem { get; }
+       IInvoker Invoker { get; }
 
        void StartState(Type nextState);
     }

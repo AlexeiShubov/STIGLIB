@@ -9,21 +9,21 @@ namespace STIGRADOR.FSM
     {
         protected readonly Dictionary<Type, FSMState> _states = new Dictionary<Type, FSMState>();
 
-        public SystemModel SystemModel { get; }
-        public ScopeModel ScopeModel { get; }
-        public Binder SystemBinder { get; }
-        public Binder ScopeBinder { get; }
-        public IInvoker SystemInvoker { get; }
-        public IInvoker ScopeInvoker { get; }
+        public SystemModel ModelSystem { get; }
+        public ScopeModel Model { get; }
+        public Binder BinderSystem { get; }
+        public Binder Binder { get; }
+        public IInvoker InvokerSystem { get; }
+        public IInvoker Invoker { get; }
 
         public FSM(string name, SystemEntity systemEntity) : base(name)
         {
-            SystemModel = systemEntity.SystemModel;
-            ScopeModel = systemEntity.ScopeModel;
-            SystemBinder = systemEntity.SystemBinder;
-            ScopeBinder = systemEntity.ScopeBinder;
-            SystemInvoker = systemEntity.SystemInvoker;
-            ScopeInvoker = systemEntity.ScopeInvoker;
+            ModelSystem = systemEntity.SystemModel;
+            Model = systemEntity.ScopeModel;
+            BinderSystem = systemEntity.SystemBinder;
+            Binder = systemEntity.ScopeBinder;
+            InvokerSystem = systemEntity.SystemInvoker;
+            Invoker = systemEntity.ScopeInvoker;
         }
 
         public override void DoUpdate()

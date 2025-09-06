@@ -6,12 +6,12 @@ namespace STIGRADOR.FSM
     {
         protected IFSM _FSM;
 
-        protected SystemModel GlobalModel => _FSM.SystemModel;
-        protected ScopeModel ScopeModel => _FSM.ScopeModel;
-        protected Binder SystemBinder => _FSM.SystemBinder;
-        protected Binder ScopeBinder => _FSM.ScopeBinder;
-        protected IInvoker SystemEventManager => _FSM.SystemInvoker;
-        protected IInvoker ScopeEventManager => _FSM.ScopeInvoker;
+        protected SystemModel _ModelGlobal => _FSM.ModelSystem;
+        protected ScopeModel _Model => _FSM.Model;
+        protected Binder _BinderSystem => _FSM.BinderSystem;
+        protected Binder _Binder => _FSM.Binder;
+        protected IInvoker _EventManagerSystem => _FSM.InvokerSystem;
+        protected IInvoker _EventManager => _FSM.Invoker;
 
         public virtual void Init(IFSM FSM)
         {
@@ -20,8 +20,8 @@ namespace STIGRADOR.FSM
 
         public override void Dispose()
         {
-            SystemBinder.Dispose();
-            ScopeBinder.Dispose();
+            _BinderSystem.Dispose();
+            _Binder.Dispose();
         }
     }
 }

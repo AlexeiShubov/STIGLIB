@@ -3,56 +3,37 @@ using UnityEngine.EventSystems;
 
 namespace STIGRADOR.MVVM
 {
-    public class UIClickBind : BinderMonoBehaviour
+    [RequireComponent(typeof(EventTrigger))]
+    public class UIClickBind : UIBindBase
     {
-        [SerializeField] protected string _enableField;
-        [SerializeField] protected bool _defaultEnable = true;
-
-        protected bool _interactable;
-        protected EventTrigger _eventTrigger;
+        private EventTrigger _eventTrigger;
         
-        protected virtual void Awake()
+        public override void Initialize(ScopeModel scopeModel, ScopeEventManager scopeEventManager)
         {
+            _eventTrigger = GetComponent<EventTrigger>();
+            
+            base.Initialize(scopeModel, scopeEventManager);
+        }
+        
+        protected override void Subscribe()
+        {
+            base.Subscribe();
+            
             var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
             
-            _interactable = _defaultEnable;
-            _enableField = _enableField == "" ? $"{gameObject.name}Enable" : _enableField;
-            _eventTrigger = gameObject.AddComponent<EventTrigger>();
-
-            entry.callback.AddListener(OnClick);
+            entry.callback.AddListener(OnClickEventTrigger);
             _eventTrigger.triggers.Add(entry);
         }
 
-        protected virtual void Start()
-        {
-            _Binder.Bind<bool>($"On{_enableField}Changed", OnItemEnable);
-
-            OnItemEnable(_Model.GetBool(_enableField, _defaultEnable));
-        }
-
-        protected virtual void OnItemEnable(bool status)
-        {
-            _interactable = status;
-        }
-
-        protected virtual void OnClick(BaseEventData data)
+        protected virtual void OnClickEventTrigger(BaseEventData data)
         {
             OnClick();
-        }
-
-        protected virtual void OnClick()
-        {
-            if (!_interactable || !isActiveAndEnabled) return;
-
-            _Invoker.Invoke("OnBtn", _enableField);
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            
-            if (_eventTrigger == null) return;
-            
+
             _eventTrigger.triggers.ForEach(t => t.callback.RemoveAllListeners());
             _eventTrigger.triggers.Clear();
         }
