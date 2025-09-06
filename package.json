@@ -1,6 +1,6 @@
 {
   "name": "com.stigrador.gitpackage",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "displayName": "STIGLIB",
   "description": "My base package libs",
   "unity": "2019.1",
