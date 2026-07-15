@@ -11,6 +11,16 @@
 /[Pp]ackages/
 /[Pp]roject[Ss]ettings/
 
+# Stray root .meta files Unity generates when this repo is opened
+# directly as a project (package.json at root confuses the Package Manager)
+/Assets.meta
+/Library.meta
+/Logs.meta
+/Packages.meta
+/ProjectSettings.meta
+/Temp.meta
+/UserSettings.meta
+
 *.csproj
 *.unityproj
 *.sln
