@@ -32,8 +32,8 @@ namespace STIGRADOR.MVVM
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-			
-			_button.onClick.RemoveAllListeners();
+
+			_button.onClick.RemoveListener(OnClick);
 		}
 	}
 }

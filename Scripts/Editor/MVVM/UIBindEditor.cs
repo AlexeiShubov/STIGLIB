@@ -30,7 +30,7 @@ namespace STIGRADOR.MVVM.Editor
             
             EditorGUILayout.Space();
             EditorGUILayout.TextField("EnableFieldEventName", $"On{enableField}Changed");
-            EditorGUILayout.TextField("OnClickEventName", uiBind._oNClickEventName);
+            EditorGUILayout.TextField("OnClickEventName", uiBind.OnClickEventName);
 
             if (GUI.changed)
             {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace STIGRADOR.MVVM
 {
@@ -14,17 +15,28 @@ namespace STIGRADOR.MVVM
         {
             _bindings = new Dictionary<string, Delegate>();
         }
-        
-        public void WriteEvent(string eventName, Delegate handler)
+
+        public bool WriteEvent(string eventName, Delegate handler)
         {
-            if (!_bindings.ContainsKey(eventName))
+            if (!_bindings.TryGetValue(eventName, out var existing))
             {
                 _bindings.Add(eventName, handler);
+
+                return true;
             }
 
-            if (DelegateContains(_bindings[eventName], handler)) return;
+            if (existing != null && existing.GetType() != handler.GetType())
+            {
+                Debug.LogError($"[Binder] Cannot bind <color=yellow>'{eventName}'</color>: already bound with delegate type <color=magenta>{existing.GetType().Name}</color>, attempted to bind <color=magenta>{handler.GetType().Name}</color>. New binding ignored.");
 
-            _bindings[eventName] = Delegate.Combine(_bindings[eventName], handler);
+                return false;
+            }
+
+            if (DelegateContains(existing, handler)) return true;
+
+            _bindings[eventName] = Delegate.Combine(existing, handler);
+
+            return true;
         }
 
         public void RemoveEvent(string eventName, Delegate handler)

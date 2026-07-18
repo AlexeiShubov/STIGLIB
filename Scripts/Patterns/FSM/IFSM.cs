@@ -7,10 +7,11 @@ namespace STIGRADOR.FSM
     {
        SystemModel ModelSystem { get; }
        ScopeModel Model { get; }
-       Binder BinderSystem { get; }
-       Binder Binder { get; }
        IInvoker InvokerSystem { get; }
        IInvoker Invoker { get; }
+
+       Binder CreateSystemBinder();
+       Binder CreateScopeBinder();
 
        void StartState(Type nextState);
     }

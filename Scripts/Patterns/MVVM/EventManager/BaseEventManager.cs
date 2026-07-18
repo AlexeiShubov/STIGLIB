@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace STIGRADOR.MVVM
@@ -50,12 +51,21 @@ namespace STIGRADOR.MVVM
         protected virtual void InvokeInternal<T>(string eventName, Action<T> invokeAction) where T : Delegate
         {
             if (!_eventHandlers.TryGetValue(eventName, out var handlers)) return;
-            
-            foreach (var handler in handlers)
+
+            var snapshot = handlers.ToArray();
+
+            foreach (var handler in snapshot)
             {
                 if (handler is T action)
                 {
-                    invokeAction(action);
+                    try
+                    {
+                        invokeAction(action);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.LogException(ex);
+                    }
                 }
                 else
                 {

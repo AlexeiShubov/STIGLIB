@@ -1,6 +1,8 @@
+using System;
+
 namespace STIGRADOR.MVVM
 {
-    public class SystemEntity    
+    public class SystemEntity : IDisposable
     {
         public SystemModel SystemModel { get; }
         public ScopeModel ScopeModel { get; }
@@ -10,11 +12,11 @@ namespace STIGRADOR.MVVM
         public ScopeEventManager ScopeInvoker { get; }
 
         public SystemEntity(
-            SystemModel systemModel, 
+            SystemModel systemModel,
             ScopeModel scopeModel,
             Binder systemBinder,
             Binder scopeBinder,
-            SystemEventManager systemEventManager, 
+            SystemEventManager systemEventManager,
             ScopeEventManager scopeEventManager
             )
         {
@@ -24,6 +26,12 @@ namespace STIGRADOR.MVVM
             ScopeBinder = scopeBinder;
             SystemInvoker = systemEventManager;
             ScopeInvoker = scopeEventManager;
+        }
+
+        public void Dispose()
+        {
+            SystemBinder?.Dispose();
+            ScopeBinder?.Dispose();
         }
     }
 }

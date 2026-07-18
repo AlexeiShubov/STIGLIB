@@ -9,10 +9,11 @@ namespace STIGRADOR.FSM
     {
         protected readonly Dictionary<Type, FSMState> _states = new Dictionary<Type, FSMState>();
 
+        private readonly SystemEventManager _systemEventManager;
+        private readonly ScopeEventManager _scopeEventManager;
+
         public SystemModel ModelSystem { get; }
         public ScopeModel Model { get; }
-        public Binder BinderSystem { get; }
-        public Binder Binder { get; }
         public IInvoker InvokerSystem { get; }
         public IInvoker Invoker { get; }
 
@@ -20,11 +21,14 @@ namespace STIGRADOR.FSM
         {
             ModelSystem = systemEntity.SystemModel;
             Model = systemEntity.ScopeModel;
-            BinderSystem = systemEntity.SystemBinder;
-            Binder = systemEntity.ScopeBinder;
-            InvokerSystem = systemEntity.SystemInvoker;
-            Invoker = systemEntity.ScopeInvoker;
+            _systemEventManager = systemEntity.SystemInvoker;
+            _scopeEventManager = systemEntity.ScopeInvoker;
+            InvokerSystem = _systemEventManager;
+            Invoker = _scopeEventManager;
         }
+
+        public Binder CreateSystemBinder() => new Binder(_systemEventManager);
+        public Binder CreateScopeBinder() => new Binder(_scopeEventManager);
 
         public override void DoUpdate()
         {

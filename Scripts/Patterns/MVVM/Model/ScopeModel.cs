@@ -2,7 +2,7 @@ namespace STIGRADOR.MVVM
 {
     public class ScopeModel : BaseModel
     {
-        public ScopeModel(BaseEventManager baseEventManager) : base(baseEventManager)
+        public ScopeModel(IInvoker baseEventManager) : base(baseEventManager)
         {
         }
     }

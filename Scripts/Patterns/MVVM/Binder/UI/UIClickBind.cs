@@ -7,22 +7,23 @@ namespace STIGRADOR.MVVM
     public class UIClickBind : UIBindBase
     {
         private EventTrigger _eventTrigger;
-        
+        private EventTrigger.Entry _entry;
+
         public override void Initialize(ScopeModel scopeModel, ScopeEventManager scopeEventManager)
         {
             _eventTrigger = GetComponent<EventTrigger>();
-            
+
             base.Initialize(scopeModel, scopeEventManager);
         }
-        
+
         protected override void Subscribe()
         {
             base.Subscribe();
-            
-            var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-            
-            entry.callback.AddListener(OnClickEventTrigger);
-            _eventTrigger.triggers.Add(entry);
+
+            _entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
+
+            _entry.callback.AddListener(OnClickEventTrigger);
+            _eventTrigger.triggers.Add(_entry);
         }
 
         protected virtual void OnClickEventTrigger(BaseEventData data)
@@ -34,8 +35,11 @@ namespace STIGRADOR.MVVM
         {
             base.OnDestroy();
 
-            _eventTrigger.triggers.ForEach(t => t.callback.RemoveAllListeners());
-            _eventTrigger.triggers.Clear();
+            if (_entry != null)
+            {
+                _entry.callback.RemoveListener(OnClickEventTrigger);
+                _eventTrigger.triggers.Remove(_entry);
+            }
         }
     }
 }

@@ -14,26 +14,30 @@ namespace STIGRADOR.MVVM
 
         public void Bind(string eventName, Action handler)
         {
+            if (!_bindingsStorage.WriteEvent(eventName, handler)) return;
+
             _eventManager.Bind(eventName, handler);
-            _bindingsStorage.WriteEvent(eventName, handler);
-        } 
-        
+        }
+
         public void Bind<A>(string eventName, Action<A> handler)
         {
+            if (!_bindingsStorage.WriteEvent(eventName, handler)) return;
+
             _eventManager.Bind(eventName, handler);
-            _bindingsStorage.WriteEvent(eventName, handler);
-        } 
-        
-        public void Bind<A, B>(string eventName, Action<A, B> handler)        
+        }
+
+        public void Bind<A, B>(string eventName, Action<A, B> handler)
         {
+            if (!_bindingsStorage.WriteEvent(eventName, handler)) return;
+
             _eventManager.Bind(eventName, handler);
-            _bindingsStorage.WriteEvent(eventName, handler);
-        } 
-        
+        }
+
         public void Bind<A, B, C>(string eventName, Action<A, B, C> handler)
         {
+            if (!_bindingsStorage.WriteEvent(eventName, handler)) return;
+
             _eventManager.Bind(eventName, handler);
-            _bindingsStorage.WriteEvent(eventName, handler);
         }
 
         public void UnBind(string eventName, Action handler)

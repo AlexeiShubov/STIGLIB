@@ -17,7 +17,7 @@ namespace STIGRADOR.MVVM
 
         protected virtual void OnDestroy()
         {
-            _Binder.Dispose();
+            _Binder?.Dispose();
         }
     }
 }
